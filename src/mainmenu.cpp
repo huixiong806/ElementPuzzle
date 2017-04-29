@@ -1,6 +1,6 @@
 #include <iostream>
 #include <graphics.h>
-using namespace std;
+#include "mazemap.h"
 int main(int argc, char** argv)
 {
 	initgraph(640,480);
