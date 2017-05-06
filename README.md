@@ -1,2 +1,2 @@
-# MazeStorm
-A set of games based on maze map.
+# ElementMaze
+A maze game with lots of props,elements.
