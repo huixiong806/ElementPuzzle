@@ -1,6 +1,6 @@
 [Project]
-FileName=ElementPuzzle.dev
-Name=ElementPuzzle
+FileName=ElementMaze.dev
+Name=ElementMaze
 Type=1
 Ver=2
 ObjFiles=
@@ -19,7 +19,7 @@ ObjectOutput=
 LogOutput=
 LogOutputEnabled=0
 OverrideOutput=0
-OverrideOutputName=ElementPuzzle.exe
+OverrideOutputName=mazestorm.exe
 HostApplication=
 UseCustomMakefile=0
 CustomMakefile=
