@@ -90,4 +90,8 @@ void Player::setPosition(Vec2i position_)
 {
 	position = position_;
 }
+const Vec2i Player::getPosition()
+{
+	return position;
+}
 NS_EM_END

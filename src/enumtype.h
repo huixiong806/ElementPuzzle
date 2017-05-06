@@ -11,7 +11,7 @@ enum class Prop: int32_t
 	shovel = 53,
 	hammer = 54,
 	pickaxe = 55,
-	airUnit = 56
+	airUnit = 56,
 };
 enum class EdgeType :int32_t
 {
@@ -22,11 +22,14 @@ enum class EdgeType :int32_t
 	ironWall = 4,
 	pressureDoor = 5,
 	letterDoor = 6,
-	oneWayLetterDoor = 7,
-	conditionDoor = 8,
-	oneWayDoor = 9,
-	timesLimitedDoor = 10,
-	oneWayTimesLimitedDoor = 11
+	oneWayLetterDoor0 = 7,
+	oneWayLetterDoor1 = 8,
+	conditionDoor = 9,
+	oneWayDoor0 = 10,
+	oneWayDoor1 = 11,
+	timesLimitedDoor = 12,
+	oneWayTimesLimitedDoor0 = 13,
+	oneWayTimesLimitedDoor1 = 14,
 };
 enum class EventType : int32_t
 {
@@ -41,7 +44,7 @@ enum class EventType : int32_t
 	playerMoveSuccessfully = 8,
 	playerTeleported = 9,
 	playerHaveNoProp = 10,
-	cannotInteractive = 11
+	cannotInteractive = 11,
 };
 enum class NodeType :int32_t
 {
@@ -49,7 +52,7 @@ enum class NodeType :int32_t
 	startPoint = 1,
 	endPoint = 2,
 	teleportPoint = 3,
-	lava = 4
+	lava = 4,
 };
 NS_EM_END
 #endif

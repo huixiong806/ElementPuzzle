@@ -14,10 +14,13 @@ class Node
 public:
 	Node(){}
 	~Node(){}
-	Node(NodeType type_,bool allow_teleport_,int32_t teleportIndex_,Vec2i teleportTarget_,Porp prop_):
-			type(type),teleportIndex(teleportIndex_),teleportTarget(teleportTarget_),prop(prop_)
+	Node(NodeType type_,int32_t teleportIndex_,Vec2i teleportTarget_,Prop prop_):
+			type(type_),teleportIndex(teleportIndex_),teleportTarget(teleportTarget_),prop(prop_)
 	{}
 	std::vector<Event> arrive(Player& player);
+	const int32_t typeToInt()const;
+	const int32_t propToInt()const;
+	const int32_t getTeleportIndex()const;
 private:
 	NodeType type;
 	int32_t teleportIndex;

@@ -16,6 +16,17 @@ public:
 	bool break_wall(uint32_t tool);
 	//玩家尝试通过 
 	std::pair<bool, std::vector<Event>> tryToPass(Player& player, int32_t way);
+	Edge(EdgeType type_, int32_t passPermit0_, int32_t passPermit1_, int32_t passTimesLimit_, bool allowPass0_, bool allowPass1_, int32_t pressureNeed_, uint32_t allowBreak_) :
+		type(type_), passTimesLimit(passTimesLimit_), pressureNeed(pressureNeed_), allowBreak(allowBreak_)
+	{
+		passPermit[0] = passPermit0_;
+		passPermit[1] = passPermit1_;
+		allowPass[0] = allowPass0_;
+		allowPass[1] = allowPass1_;
+	}
+	Edge(){}
+	const int32_t typeToInt()const;
+	const int32_t passPermitToInt(int index)const;
 private:
 	EdgeType type;//类型 
 	int32_t passPermit[2];//表示两个方向通过需要的通行证 

@@ -20,6 +20,17 @@ public:
 	void addForeverPermition(int32_t index);
 	void addOneTimePermition(int32_t index);
 	void setPosition(Vec2i position_);
+	const Vec2i getPosition();
+	Player(Vec2i position_)
+	{
+		position = position_;
+		for (int i = 0; i < 3; ++i)
+			tool[i] = 0;
+		for (int i = 0; i < 26; ++i)
+			passPermit[i] = 0;
+		passPermit[(size_t)'N' - 'A'] = -1;
+		airUnit = 0;
+	}
 	Player(Vec2i position_, std::vector<int32_t>tool_, std::vector<int32_t>passPermit_,int32_t airUnit_)
 	{
 		position = position_;
@@ -30,7 +41,7 @@ public:
 		airUnit = airUnit_;
 	}
 private:
-	int32_t passPermit[26];//表示持有的通行证
+	int32_t passPermit[26];//持有的通行证数量，-1为无限
 	int32_t airUnit;//持有的气罐数量
 	int32_t tool[3];//持有的工具数量
 	Vec2i position;//位置坐标 

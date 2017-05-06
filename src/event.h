@@ -24,10 +24,10 @@ public:
 	{
 		type=type_;
 	}
-private:
 	EventType type;
 	Prop prop;
 	Vec2i position;
+private:
 };
 NS_EM_END
 #endif

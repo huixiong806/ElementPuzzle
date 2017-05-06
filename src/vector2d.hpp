@@ -1,6 +1,5 @@
 #ifndef VECTOR2D_HPP
 #define VECTOR2D_HPP
-NS_EM_BEGIN
 template <typename T>
 class Vec2
 {
@@ -9,45 +8,45 @@ public:
 	Vec2(){}
 	~Vec2(){}
 	Vec2(T xx, T yy) :x(xx), y(yy) {}
-	Vec2<T>& operator+= (const Vec2& rhs)
+	Vec2& operator+= (const Vec2& rhs)
 	{
 		x += rhs.x;
 		y += rhs.y;
 		return *this;
 	}
-	Vec2<T>& operator-= (const Vec2& rhs)
+	Vec2& operator-= (const Vec2& rhs)
 	{
 		x -= rhs.x;
 		y -= rhs.y;
 		return *this;
 	}
-	Vec2<T>& operator*= (T value)
+	Vec2& operator*= (T value)
 	{
 		x *= value;
 		y *= value;
 		return *this;
 	}
-	Vec2<T>& operator/= (T value)
+	Vec2& operator/= (T value)
 	{
 		x /= value;
 		y /= value;
 		return *this;
 	}
-	Vec2<T>& operator+ (const Vec2& rhs)
+	const Vec2 operator+ (const Vec2& rhs)const
 	{
-		return Vec2<T>(x + rhs.x, y + rhs.y);
+		return Vec2(x + rhs.x, y + rhs.y);
 	}
-	Vec2<T>& operator- (const Vec2& rhs)
+	const Vec2 operator- (const Vec2& rhs)const
 	{
-		return Vec2<T>(x - rhs.x, y - rhs.y);
+		return Vec2(x - rhs.x, y - rhs.y);
 	}
-	Vec2<T> operator* (T value) const
+	const Vec2 operator* (T value) const
 	{
-		return Vec2<T>(x * value, y * value);
+		return Vec2(x * value, y * value);
 	}
-	Vec2<T> operator/ (T value) const
+	const Vec2 operator/ (T value) const
 	{
-		return Vec2<T>(x / value, y / value);
+		return Vec2(x / value, y / value);
 	}
 	bool operator ==(const Vec2& rhs)
 	{
@@ -59,5 +58,4 @@ using Vec2l = Vec2<long>;
 using Vec2f = Vec2<float>;
 using Vec2d = Vec2<double>;
 const Vec2i moveDelta[4]={Vec2i(-1,0),Vec2i(1,0),Vec2i(0,-1),Vec2i(0,1)};
-NS_EM_END
 #endif
