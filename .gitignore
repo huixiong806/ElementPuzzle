@@ -1,3 +1,5 @@
 *.o
 *.exe
 ElementPuzzle_CMD/
+other/
+image/

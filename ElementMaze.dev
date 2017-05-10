@@ -11,7 +11,7 @@ ResourceIncludes=
 MakeIncludes=
 Compiler=
 CppCompiler=
-Linker=_@@_
+Linker=-lgraphics -lgdi32 -limm32 -lmsimg32 -lole32 -loleaut32 -lwinmm -luuid -mwindows_@@_
 IsCpp=1
 Icon=
 ExeOutput=
@@ -80,18 +80,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit14]
-FileName=src\testgame.cpp
-CompileCpp=1
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit15]
-FileName=src\vector2d.hpp
+FileName=src\gamescene.cpp
 CompileCpp=1
 Folder=
 Compile=1
@@ -192,6 +182,26 @@ BuildCmd=
 
 [Unit13]
 FileName=src\player.h
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit16]
+FileName=src\gamescene.cpp
+CompileCpp=1
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit14]
+FileName=src\vector2d.hpp
 CompileCpp=1
 Folder=
 Compile=1

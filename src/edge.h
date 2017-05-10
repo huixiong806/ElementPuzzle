@@ -26,7 +26,7 @@ public:
 	}
 	Edge(){}
 	const int32_t typeToInt()const;
-	const int32_t passPermitToInt(int index)const;
+	const int32_t getPassPermit(int index)const;
 private:
 	EdgeType type;//类型 
 	int32_t passPermit[2];//表示两个方向通过需要的通行证 

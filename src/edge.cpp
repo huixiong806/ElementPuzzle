@@ -65,8 +65,8 @@ const int32_t Edge::typeToInt()const
 {
 	return (int32_t)type;
 }
-const int32_t Edge::passPermitToInt(int index)const
+const int32_t Edge::getPassPermit(int index)const
 {
-	return (int32_t)passPermit[index];
+	return passPermit[index];
 }
 NS_EM_END

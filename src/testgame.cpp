@@ -8,6 +8,12 @@
 #include <Windows.h>
 #include "game.h"
 USING_NS_EM;
+const char interactive[3][4]=
+{
+	{'y','h','g','j'},
+	{'f','v','c','b'},
+	{'w','s','a','d'}
+};
 std::shared_ptr<Game> game;
 void printmap(std::shared_ptr<Map> map)
 {
@@ -30,10 +36,10 @@ void printmap(std::shared_ptr<Map> map)
 				else if (type == 3)out = "~~";
 				else if (type == 4)out = "==";
 				else if (type == 5)out = "PR";
-				else if (type == 6)out = "-"+ (char)(map->getEdgeR(i>> 1, j - 1 >> 1).passPermitToInt(1)+'a');
-				else if (type == 7)out = "v"+ (char)(map->getEdgeR(i>> 1, j - 1 >> 1).passPermitToInt(0)+'a');
-				else if (type == 8)out = "^"+ (char)(map->getEdgeR(i>> 1, j - 1 >> 1).passPermitToInt(1)+'a');
-				else if (type == 9)out = (char)(map->getEdgeR(i >> 1, j - 1 >> 1).passPermitToInt(0)) + (char)(map->getEdgeR(i>> 1, j - 1 >> 1).passPermitToInt(1));
+				else if (type == 6)out += "-",out+=(char)(map->getEdgeR(i>> 1, j - 1 >> 1).getPassPermit(1)+'a');
+				else if (type == 7)out += "v",out+=(char)(map->getEdgeR(i>> 1, j - 1 >> 1).getPassPermit(0)+'a');
+				else if (type == 8)out += "^",out+=(char)(map->getEdgeR(i>> 1, j - 1 >> 1).getPassPermit(1)+'a');
+				else if (type == 9)out+=(char)(map->getEdgeR(i >> 1, j - 1 >> 1).getPassPermit(0)+'a'),out+=(char)(map->getEdgeR(i>> 1, j - 1 >> 1).getPassPermit(1)+'a');
 				else if (type == 10)out = "v-";
 				else if (type == 11)out = "^-";
 				else if (type == 12)out = "xx";
@@ -51,9 +57,9 @@ void printmap(std::shared_ptr<Map> map)
 				else if (type == 3)out = "~";
 				else if (type == 4)out = "=";
 				else if (type == 5)out = "P";
-				else if (type == 6)out = (char)(map->getEdgeC(i-1 >> 1, j >> 1).passPermitToInt(1) + 'a');
-				else if (type == 7)out = (char)(map->getEdgeC(i-1 >> 1, j >> 1).passPermitToInt(0) + 'a');
-				else if (type == 8)out = (char)(map->getEdgeC(i-1 >> 1, j >> 1).passPermitToInt(1) + 'a');
+				else if (type == 6)out = (char)(map->getEdgeC(i-1 >> 1, j >> 1).getPassPermit(1) + 'a');
+				else if (type == 7)out = (char)(map->getEdgeC(i-1 >> 1, j >> 1).getPassPermit(0) + 'a');
+				else if (type == 8)out = (char)(map->getEdgeC(i-1 >> 1, j >> 1).getPassPermit(1) + 'a');
 				else if (type == 9)out = "?";
 				else if (type == 10)out = ">";
 				else if (type == 11)out = "<";
@@ -78,7 +84,7 @@ void printmap(std::shared_ptr<Map> map)
 					else if (prop >= 1 && prop <= 26)
 						std::cout << " " << (char)(prop - 1 + 'A');
 					else if (prop >= 27 && prop <= 52)
-						std::cout << " " << (char)(prop - 1 + 'a');
+						std::cout << " " << (char)(prop - 27 + 'a');
 					else if (prop == 53)std::cout << "->";
 					else if (prop == 54)std::cout << "-]";
 					else if (prop == 55)std::cout << "-}";
@@ -157,18 +163,41 @@ int main()
 	while (key = getch())
 	{
 		if (key == -32)continue;
-		int dir=-1;
+		int dir=-1;int type=1,tool=-1;
 		if (key == 72)dir = 0;
 		if (key == 80)dir = 1;
 		if (key == 75)dir = 2;
 		if (key == 77)dir = 3;
+		for(int i=0;i<3;++i)
+		{
+			for(int j=0;j<4;++j)
+			{
+				if(key==interactive[i][j])
+				{
+					dir=j;
+					tool=i;
+					type=2;
+					break;
+				}
+			}
+			if(type==2)break;
+		}
+		std::cout<<type<<" "<<dir<<" "<<tool<<std::endl;
 		if (dir == -1)continue;
-		std::vector<Event>events=game->move(dir);
+		std::vector<Event>events;
+		if(type==1)
+		{
+			events=game->move(dir);
+		}else if(type==2)
+		{
+			events=game->interactive(dir,tool);
+		}
 		for (auto&& item : events)
 		{
 			if (item.type == EventType::playerLose)lose = true;
 			if (item.type == EventType::playerWin)win = true;
 		}
+		
 		system("cls");
 		printmap(game->getMap());
 		if(win)

@@ -54,6 +54,9 @@ std::vector<Event> Player::move(Edge& edge, Node& target, int32_t way, Vec2i tar
 }
 bool Player::usePermition(int32_t index)
 {
+	//没有N卡，并且对N有需求，则无法满足 (不能用A代替) 
+	if (passPermit[(int32_t)('N'-'A')]==0&&index==(int32_t)('N'-'A'))return false;
+	//A卡无限或需求卡无限， 则满足。 
 	if (passPermit[index] == -1 || passPermit[0] == -1)return true;
 	if (passPermit[index] == 0 && passPermit[0] == 0)return false;
 	else

@@ -18,7 +18,7 @@ std::vector<Event> Node::arrive(Player& player)
 		if ((int32_t)prop >= (int32_t)Prop::A && (int32_t)prop <= (int32_t)Prop::Z)
 			player.addForeverPermition((int32_t)prop - 1);
 		else if ((int32_t)prop >= (int32_t)Prop::a && (int32_t)prop <= (int32_t)Prop::z)
-			player.addOneTimePermition((int32_t)prop - 27);
+			player.addOneTimePermition((int32_t)prop - 27);  
 		else if ((int32_t)prop >= (int32_t)Prop::shovel && (int32_t)prop <= (int32_t)Prop::pickaxe)
 			player.addTool((int32_t)prop - 53);
 		else if (prop == Prop::airUnit)

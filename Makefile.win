@@ -4,9 +4,9 @@
 CPP      = g++.exe
 CC       = gcc.exe
 WINDRES  = windres.exe
-OBJ      = src/edge.o src/event.o src/game.o src/node.o src/player.o src/testgame.o
-LINKOBJ  = src/edge.o src/event.o src/game.o src/node.o src/player.o src/testgame.o
-LIBS     = -L"D:/Dev-Cpp/MinGW64/lib32" -L"D:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -static-libgcc -m32
+OBJ      = src/edge.o src/event.o src/game.o src/node.o src/player.o src/gamescene.o
+LINKOBJ  = src/edge.o src/event.o src/game.o src/node.o src/player.o src/gamescene.o
+LIBS     = -L"D:/Dev-Cpp/MinGW64/lib32" -L"D:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/lib32" -static-libgcc -lgraphics -lgdi32 -limm32 -lmsimg32 -lole32 -loleaut32 -lwinmm -luuid -mwindows -m32
 INCS     = -I"D:/Dev-Cpp/MinGW64/include" -I"D:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include"
 CXXINCS  = -I"D:/Dev-Cpp/MinGW64/include" -I"D:/Dev-Cpp/MinGW64/x86_64-w64-mingw32/include" -I"D:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include" -I"D:/Dev-Cpp/MinGW64/lib/gcc/x86_64-w64-mingw32/4.8.1/include/c++"
 BIN      = ElementMaze.exe
@@ -39,5 +39,5 @@ src/node.o: src/node.cpp
 src/player.o: src/player.cpp
 	$(CPP) -c src/player.cpp -o src/player.o $(CXXFLAGS)
 
-src/testgame.o: src/testgame.cpp
-	$(CPP) -c src/testgame.cpp -o src/testgame.o $(CXXFLAGS)
+src/gamescene.o: src/gamescene.cpp
+	$(CPP) -c src/gamescene.cpp -o src/gamescene.o $(CXXFLAGS)

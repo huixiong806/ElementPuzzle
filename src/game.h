@@ -16,6 +16,7 @@ public:
 	void setPlayer(Vec2i position);
 	std::shared_ptr<Player> getPlayer();
 	std::vector<Event> move(int32_t direction);
+	std::vector<Event> interactive(int32_t direction,uint32_t tool);
 private:
 	std::shared_ptr<Map> map;
 	std::shared_ptr<Player> player;
