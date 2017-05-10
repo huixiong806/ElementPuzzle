@@ -48,7 +48,7 @@ public:
 	{
 		return Vec2(x / value, y / value);
 	}
-	bool operator ==(const Vec2& rhs)
+	bool operator ==(const Vec2& rhs)const
 	{
 		return(x == rhs.x&&y == rhs.y);
 	}
