@@ -18,8 +18,8 @@ public:
 			type(type_),teleportIndex(teleportIndex_),teleportTarget(teleportTarget_),prop(prop_)
 	{}
 	std::vector<Event> arrive(Player& player);
-	const int32_t typeToInt()const;
-	const int32_t propToInt()const;
+	const NodeType getType()const;
+	const Prop getProp()const;
 	const int32_t getTeleportIndex()const;
 private:
 	NodeType type;

@@ -1,5 +1,10 @@
 *.o
 *.exe
+*.db
 ElementPuzzle_CMD/
+ElementPuzzle/
 other/
 image/
+level/
+Release/
+Debug/

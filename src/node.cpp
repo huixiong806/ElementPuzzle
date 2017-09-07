@@ -28,13 +28,13 @@ std::vector<Event> Node::arrive(Player& player)
 	}
 	return events;
 }
-const int32_t Node::typeToInt()const
+const NodeType Node::getType()const
 {
-	return (int32_t)type;
+	return type;
 }
-const int32_t Node::propToInt()const
+const Prop Node::getProp()const
 {
-	return (int32_t)prop;
+	return prop;
 }
 const int32_t Node::getTeleportIndex()const
 {

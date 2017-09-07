@@ -2,6 +2,7 @@
 #define ENUMTYPE_H
 #include "definitions.h"
 #include <cstdint>
+#include <string>
 NS_EM_BEGIN
 enum class Prop: int32_t
 {
@@ -45,6 +46,20 @@ enum class EventType : int32_t
 	playerTeleported = 9,
 	playerHaveNoProp = 10,
 	cannotInteractive = 11,
+};
+const std::string eventInformationText[12]=
+{	"NULL",
+	"player out of range!",
+	"player Lose!",
+	"player Win!",
+	"player picked up a prop",
+	"player used a prop",
+	"player have no permition",
+	"player moved failed",
+	"player moved successful",
+	"player teleported",
+	"player has no prop",
+	"cannot interactive"
 };
 enum class NodeType :int32_t
 {

@@ -7,21 +7,25 @@
 #include <Windows.h>
 #include <graphics.h>
 #include <sstream>
+#include <time.h>
+#include "image.hpp"
 #include "game.h"
 USING_NS_EM;
 std::shared_ptr<Game> game;
 const Vec2d screenSize=Vec2d(1024,768);
 const char interactive[3][4]=
 {
-	{'y','h','g','j'},
-	{'f','v','c','b'},
-	{'w','s','a','d'}
+	{'Y','H','G','J'},
+	{'F','V','C','B'},
+	{'W','S','A','D'}
 };
-void readLevel()
+void readLevel(int levelID)
 {
 	int32_t w, h,x,y;
+	std::stringstream levelName;
+	levelName<<"level\\1-"<<levelID<<".epl";
 	std::ifstream inputStream;
-	inputStream.open("level.txt",std::ios::in);
+	inputStream.open(levelName.str(),std::ios::in);
 	inputStream >> h >> w;
 	game = std::make_shared<Game>(w, h);
 	for (int i = 0; i < h; ++i)
@@ -63,6 +67,7 @@ void readLevel()
 	inputStream >> x >> y;
 	game->setPlayer(Vec2i(x,y));
 }
+ 
 void outputImage(std::string filename,const Vec2d startPoint,const Vec2d picLen)
 {
 	PIMAGE imgA = newimage();
@@ -73,10 +78,25 @@ void outputImage(std::string filename,const Vec2d startPoint,const Vec2d picLen)
 	delimage(imgA);
 	delimage(imgB);
 }
+void printPoint()
+{
+	Vec2d mapSize = Vec2d(game->getMap()->getWidth(), game->getMap()->getHeight());
+	Vec2d picLen = Vec2d((screenSize.x*2.0 / 3.0) / (double)max(mapSize.x, mapSize.y), (screenSize.x*2.0 / 3.0) / (double)max(mapSize.x, mapSize.y));
+	Vec2d rectangleSize = Vec2d(picLen.x*mapSize.x, picLen.y*mapSize.y);
+	Vec2d delta = (screenSize - rectangleSize) / 2.0;
+	for (int i = 0; i<=mapSize.y; ++i)
+	{
+		for (int j = 0; j<=mapSize.x; ++j)
+		{
+			Vec2d picturePosition = Vec2d(j*picLen.x + delta.x - picLen.x / 2.0, i*picLen.y + delta.y - picLen.y / 2.0);
+			image::printPoint(picturePosition, picLen);
+		}
+	}
+}
 void printNode()
 {
 	Vec2d mapSize=Vec2d(game->getMap()->getWidth(),game->getMap()->getHeight());
-	Vec2d picLen=Vec2d((screenSize.x*2.0/3.0)/(double)std::max(mapSize.x,mapSize.y),(screenSize.x*2.0/3.0)/(double)std::max(mapSize.x,mapSize.y));
+	Vec2d picLen=Vec2d((screenSize.x*2.0/3.0)/(double)max(mapSize.x,mapSize.y),(screenSize.x*2.0/3.0)/(double)max(mapSize.x,mapSize.y));
 	Vec2d rectangleSize=Vec2d(picLen.x*mapSize.x,picLen.y*mapSize.y);
 	Vec2d delta=(screenSize-rectangleSize)/2.0;
 	for(int i=0;i<mapSize.y;++i)
@@ -84,34 +104,17 @@ void printNode()
 		for(int j=0;j<mapSize.x;++j)
 		{
 			Vec2d picturePosition=Vec2d(j*picLen.x+delta.x,i*picLen.y+delta.y);
-			int32_t type=game->getMap()->getNode(i,j).typeToInt();
-			std::stringstream ss;
-			ss<<"image\\node\\main_back\\"<<type<<".png";
-			outputImage(ss.str(),picturePosition,picLen);
-			ss.str("");
-			if(type==3)type=type*10+game->getMap()->getNode(i,j).getTeleportIndex();
-			ss<<"image\\node\\main_front\\"<<type<<".png";
-			outputImage(ss.str(),picturePosition,picLen);
-			ss.str("");
-			type=game->getMap()->getNode(i,j).propToInt();
-			if(type>=1&&type<=26)type=1;
-			if(type>=27&&type<=52)type=2;
-			ss<<"image\\node\\prop_back\\"<<type<<".png";
-			outputImage(ss.str(),picturePosition,picLen);
-			ss.str("");
-			type=game->getMap()->getNode(i,j).propToInt();
-			if(type>=27&&type<=52)type-=26;
-			if(game->getPlayer()->getPosition()==Vec2i(i,j))
-				type=233;
-			ss<<"image\\node\\prop_front\\"<<type<<".png";
-			outputImage(ss.str(),picturePosition,picLen);
+			const Node& node=game->getMap()->getNode(i,j);
+			image::printNode_maintype(node.getType(),node.getTeleportIndex(),picturePosition,picLen);
+			image::printNode_prop(node.getProp(),picturePosition,picLen);
+			if (game->getPlayer()->getPosition() == Vec2i(i, j))image::printPlayer(picturePosition,picLen);
 		}
 	}
 }
 void printEdge()
 {
 	Vec2d mapSize=Vec2d(game->getMap()->getWidth(),game->getMap()->getHeight());
-	Vec2d picLen=Vec2d((screenSize.x*2.0/3.0)/(double)std::max(mapSize.x,mapSize.y),(screenSize.x*2.0/3.0)/(double)std::max(mapSize.x,mapSize.y));
+	Vec2d picLen=Vec2d((screenSize.x*2.0/3.0)/(double)max(mapSize.x,mapSize.y),(screenSize.x*2.0/3.0)/(double)max(mapSize.x,mapSize.y));
 	Vec2d rectangleSize=Vec2d(picLen.x*mapSize.x,picLen.y*mapSize.y);
 	Vec2d delta=(screenSize-rectangleSize)/2.0;
 	for(int i=0;i<=mapSize.y;++i)
@@ -172,48 +175,64 @@ void printEdge()
 		}
 	}
 }
-void printmap()
+void printmap(int level)
 {
-	outputImage("image\\other\\background.png",Vec2d(0,0),screenSize);
+	setfont(40, 0, "宋体");
+	setcolor(EGERGB(0xff, 0x0, 0x0));
+	std::stringstream title;
+	title<<"Level "<<level;
+	outtextxy(420,0,title.str().c_str());
+	setbkcolor(EGERGB(0xff, 0xff, 0xff));
+	//outputImage("image\\other\\background.png",Vec2d(0,0),screenSize);
 	printNode();
 	printEdge();
+	printPoint();
 }
-int main()
+void printEventInformations(std::vector<Event>& events)
 {
-	//初始化为640*480大小
-    initgraph(screenSize.x, screenSize.y);
- 	readLevel();
- 	printmap();
-    char key; 
+	std::stringstream information;
+	information.clear();
+	setcolor(EGERGB(0x0, 0x3f, 0x0));
+	setfont(12, 0, "宋体"); 
+	for (auto&& item : events)
+		information<<eventInformationText[(int)item.type]<<"   ";
+	outtextxy(0,0,information.str().c_str());
+}
+int keyLock;//按键锁，2帧才能使用一次键盘 
+void lockTheKey()
+{
+	keyLock=2;
+}
+//win? lose?
+std::pair<bool,bool> update(int level)
+{
 	bool win = false, lose = false;
-	while (key = getch())
-	{
-		if (key == -32)continue;
+	std::vector<Event>events;
+	if(keyLock>0)keyLock--;
+	if(keyLock==0)
+	{ 
 		int dir=-1;int type=1,tool=-1;
-		if (key == 38)dir = 0;
-		if (key == 40)dir = 1;
-		if (key == 37)dir = 2;
-		if (key == 39)dir = 3;
+		if (keystate(key_up))dir = 0,lockTheKey();
+		else if (keystate(key_down))dir = 1,lockTheKey();
+		else if (keystate(key_left))dir = 2,lockTheKey();
+		else if (keystate(key_right))dir = 3,lockTheKey();
+		if(keystate('R'))lose=true;
 		for(int i=0;i<3;++i)
 		{
 			for(int j=0;j<4;++j)
 			{
-				if(key==interactive[i][j])
-				{
-					dir=j;
-					tool=i;
-					type=2;
-					break;
-				}
+					if(keystate(interactive[i][j]))
+					{
+						dir=j;
+						tool=i;
+						type=2;
+						lockTheKey();
+						break;
+					}
 			}
 			if(type==2)break;
 		}
-		//std::stringstream ss;
-		//ss<<type<<" "<<dir<<" "<<(int)key;
-		//outtextxy(0,0,ss.str().c_str());
-		//std::cout<<type<<" "<<dir<<" "<<tool<<std::endl;
-		if (dir == -1)continue;
-		std::vector<Event>events;
+		if (dir == -1)return std::make_pair(win,lose);
 		if(type==1)
 		{
 			events=game->move(dir);
@@ -226,20 +245,39 @@ int main()
 			if (item.type == EventType::playerLose)lose = true;
 			if (item.type == EventType::playerWin)win = true;
 		}
-		cleardevice(); 
-		printmap();
-		if(win)
+		//if(win||lose)return;
+		cleardevice();
+		printmap(level);
+		printEventInformations(events);
+	}
+	return std::make_pair(win,lose);
+}
+int main()
+{
+	int level=1;
+    initgraph(screenSize.x, screenSize.y);
+    image::init();
+    while(level<=4)
+    {
+ 		readLevel(level);
+ 		cleardevice();
+ 		printmap(level);
+		while(true)
 		{
-			outtextxy(0,0,"You win!");
-			break;
-		}
-		if (lose)
-		{
-			outtextxy(0,0,"You lose!");
-			break;
+			clock_t timeStart=clock();
+			std::pair<bool,bool>result=update(level);
+			if(result.first||result.second)
+			{
+				if(result.first)level++;//won the game
+				break;//won/lost the game
+			}
+			Sleep(33-(clock()-timeStart));
 		}
 	}
-	getch();
+	setfont(60, 0, "宋体");
+	setcolor(EGERGB(0xff, 0x0, 0x0));
+	outtextxy(250,300,"YOU WON THE GAME!");
+	while(getch()!='q');
     closegraph();
 	return 0;
 } 

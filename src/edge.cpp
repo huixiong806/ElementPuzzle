@@ -15,6 +15,9 @@ bool Edge::break_wall(uint32_t tool)
 	if (((1 << tool)&allowBreak) == false)
 		return false;
 	type = EdgeType::empty;
+	allowPass[0] = allowPass[1] = true;
+	passPermit[0] = passPermit[1] = -1;
+	passTimesLimit = -1;
 	return true;
 }
 std::pair<bool, std::vector<Event>> Edge::tryToPass(Player& player, int32_t way)
@@ -23,16 +26,6 @@ std::pair<bool, std::vector<Event>> Edge::tryToPass(Player& player, int32_t way)
 	bool success = false;
 	do
 	{
-		if (type == EdgeType::empty)
-		{
-			success = true;
-			break;
-		}
-		if ((int32_t)type >= 1 && (int32_t)type <= 5)
-		{
-			success = false;
-			break;
-		}
 		if (allowPass[way] == false)
 		{
 			success = false;
@@ -51,8 +44,7 @@ std::pair<bool, std::vector<Event>> Edge::tryToPass(Player& player, int32_t way)
 		if (player.usePermition(passPermit[way]))
 		{
 			success = true;
-		}
-		else {
+		}else {
 			events.push_back(EventType::playerHaveNoPermition);
 			success = false;
 		}
