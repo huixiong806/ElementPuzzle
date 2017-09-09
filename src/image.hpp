@@ -12,6 +12,8 @@ namespace image
 	PIMAGE letter[26];
 	PIMAGE number[16];
 	PIMAGE hexagon,lava,player,circle,triangle,point;
+	PIMAGE oneWayDoor0[2], oneWayDoor1[2], ironDoor[2];
+	PIMAGE line[2], door[2];
 	PIMAGE shovel,hammer,pickaxe,airUnit;
 	void readImage(const std::string& filename,PIMAGE& target)
 	{
@@ -47,6 +49,17 @@ namespace image
 		readImage("image\\prop\\hammer.png",hammer);
 		readImage("image\\prop\\pickaxe.png",pickaxe);
 		readImage("image\\prop\\airUnit.png",airUnit);
+		//edge items
+		readImage("image\\edge\\down_only.png", oneWayDoor0[0]);
+		readImage("image\\edge\\right_only.png", oneWayDoor0[1]);
+		readImage("image\\edge\\up_only.png", oneWayDoor1[0]);
+		readImage("image\\edge\\left_only.png", oneWayDoor1[1]);
+		readImage("image\\edge\\iron_door_row.png", ironDoor[0]);
+		readImage("image\\edge\\iron_door_col.png", ironDoor[1]);
+		readImage("image\\edge\\door_row.png", door[0]);
+		readImage("image\\edge\\door_col.png", door[1]);
+		readImage("image\\edge\\line_row.png", line[0]);
+		readImage("image\\edge\\line_col.png", line[1]);
 	}
 	void printImage(PIMAGE& image,const Vec2d startPoint,const Vec2d picLen)
 	{
@@ -118,6 +131,22 @@ namespace image
 				printImage(airUnit,startPoint,pictureLength);
 				break;
 			}
+		}
+	}
+	//打印edge的主要部分到屏幕 参数分别为 材质类型，方向(R=0或C=1),起始点,图片大小
+	void printEdge_maintype(EdgeType edgeType, int direction, const Vec2d startPoint, const Vec2d pictureLength)
+	{
+		switch (edgeType)
+		{
+		case EdgeType::empty:
+			break;
+		case EdgeType::badWall:
+			printImage(line[direction], startPoint, pictureLength);
+			break;
+		case EdgeType::dirtWall:
+			//TODO:完成本函数
+			printImage(hexagon, startPoint, pictureLength);
+			break;
 		}
 	}
 }

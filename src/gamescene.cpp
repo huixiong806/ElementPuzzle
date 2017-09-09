@@ -81,7 +81,7 @@ void outputImage(std::string filename,const Vec2d startPoint,const Vec2d picLen)
 void printPoint()
 {
 	Vec2d mapSize = Vec2d(game->getMap()->getWidth(), game->getMap()->getHeight());
-	Vec2d picLen = Vec2d((screenSize.x*2.0 / 3.0) / (double)max(mapSize.x, mapSize.y), (screenSize.x*2.0 / 3.0) / (double)max(mapSize.x, mapSize.y));
+	Vec2d picLen = Vec2d((screenSize.x*4.0 / 7.0) / (double)max(mapSize.x, mapSize.y), (screenSize.x*4.0 / 7.0) / (double)max(mapSize.x, mapSize.y));
 	Vec2d rectangleSize = Vec2d(picLen.x*mapSize.x, picLen.y*mapSize.y);
 	Vec2d delta = (screenSize - rectangleSize) / 2.0;
 	for (int i = 0; i<=mapSize.y; ++i)
@@ -96,7 +96,7 @@ void printPoint()
 void printNode()
 {
 	Vec2d mapSize=Vec2d(game->getMap()->getWidth(),game->getMap()->getHeight());
-	Vec2d picLen=Vec2d((screenSize.x*2.0/3.0)/(double)max(mapSize.x,mapSize.y),(screenSize.x*2.0/3.0)/(double)max(mapSize.x,mapSize.y));
+	Vec2d picLen=Vec2d((screenSize.x*4.0/7.0)/(double)max(mapSize.x,mapSize.y),(screenSize.x*4.0/7.0)/(double)max(mapSize.x,mapSize.y));
 	Vec2d rectangleSize=Vec2d(picLen.x*mapSize.x,picLen.y*mapSize.y);
 	Vec2d delta=(screenSize-rectangleSize)/2.0;
 	for(int i=0;i<mapSize.y;++i)
@@ -114,7 +114,7 @@ void printNode()
 void printEdge()
 {
 	Vec2d mapSize=Vec2d(game->getMap()->getWidth(),game->getMap()->getHeight());
-	Vec2d picLen=Vec2d((screenSize.x*2.0/3.0)/(double)max(mapSize.x,mapSize.y),(screenSize.x*2.0/3.0)/(double)max(mapSize.x,mapSize.y));
+	Vec2d picLen=Vec2d((screenSize.x*4.0/7.0)/(double)max(mapSize.x,mapSize.y),(screenSize.x*4.0/7.0)/(double)max(mapSize.x,mapSize.y));
 	Vec2d rectangleSize=Vec2d(picLen.x*mapSize.x,picLen.y*mapSize.y);
 	Vec2d delta=(screenSize-rectangleSize)/2.0;
 	for(int i=0;i<=mapSize.y;++i)
@@ -177,12 +177,12 @@ void printEdge()
 }
 void printmap(int level)
 {
-	setfont(40, 0, "宋体");
-	setcolor(EGERGB(0xff, 0x0, 0x0));
+	setbkcolor(EGERGB(0xff, 0xff, 0xff));
+	setcolor(EGERGB(0x0, 0x0, 0x0));
+	setfont(40, 0, "consolas");
 	std::stringstream title;
 	title<<"Level "<<level;
 	outtextxy(420,0,title.str().c_str());
-	setbkcolor(EGERGB(0xff, 0xff, 0xff));
 	//outputImage("image\\other\\background.png",Vec2d(0,0),screenSize);
 	printNode();
 	printEdge();
@@ -255,9 +255,12 @@ std::pair<bool,bool> update(int level)
 int main()
 {
 	int level=1;
+	setinitmode(0);
     initgraph(screenSize.x, screenSize.y);
+	setcaption("元素迷宫");
     image::init();
-    while(level<=4)
+	//level<=total levels
+    while(level<=6)
     {
  		readLevel(level);
  		cleardevice();
@@ -274,8 +277,8 @@ int main()
 			Sleep(33-(clock()-timeStart));
 		}
 	}
-	setfont(60, 0, "宋体");
 	setcolor(EGERGB(0xff, 0x0, 0x0));
+	setfont(60, 0, "宋体");
 	outtextxy(250,300,"YOU WON THE GAME!");
 	while(getch()!='q');
     closegraph();
