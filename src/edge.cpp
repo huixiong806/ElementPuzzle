@@ -12,6 +12,8 @@ bool Edge::pressurize()
 }
 bool Edge::break_wall(uint32_t tool)
 {
+	if (type != EdgeType::ironWall && type != EdgeType::dirtWall && type != EdgeType::woodenWall)
+		return false;
 	if (((1 << tool)&allowBreak) == false)
 		return false;
 	type = EdgeType::empty;

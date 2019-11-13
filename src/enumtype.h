@@ -14,6 +14,12 @@ enum class Prop: int32_t
 	pickaxe = 55,
 	airUnit = 56,
 };
+enum class ToolType :int32_t
+{
+	shovel = 0,
+	hammer = 1,
+	pickaxe = 2,
+};
 enum class EdgeType :int32_t
 {
 	empty = 0,

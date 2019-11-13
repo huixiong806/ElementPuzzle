@@ -11,7 +11,8 @@
 #include "image.hpp"
 #include "game.h"
 USING_NS_EM;
-std::shared_ptr<Game> game;
+using namespace std;
+shared_ptr<Game> game;
 const Vec2d screenSize=Vec2d(1024,768);
 const char interactive[3][4]=
 {
@@ -22,10 +23,10 @@ const char interactive[3][4]=
 void readLevel(int levelID)
 {
 	int32_t w, h,x,y;
-	std::stringstream levelName;
+	stringstream levelName;
 	levelName<<"level\\1-"<<levelID<<".epl";
-	std::ifstream inputStream;
-	inputStream.open(levelName.str(),std::ios::in);
+	ifstream inputStream;
+	inputStream.open(levelName.str(),ios::in);
 	inputStream >> h >> w;
 	game = std::make_shared<Game>(w, h);
 	for (int i = 0; i < h; ++i)
@@ -190,18 +191,50 @@ void printmap(int level)
 }
 void printEventInformations(std::vector<Event>& events)
 {
-	std::stringstream information;
-	information.clear();
+	stringstream information;
 	setcolor(EGERGB(0x0, 0x3f, 0x0));
 	setfont(12, 0, "宋体"); 
 	for (auto&& item : events)
 		information<<eventInformationText[(int)item.type]<<"   ";
 	outtextxy(0,0,information.str().c_str());
+	const string propName[3] = { "shovel","hammer","pickaxe" };
+	for (int i = 0; i < 3; ++i)
+	{
+		information = stringstream();
+		information<< propName[i] << ":" << game->getPlayer()->getToolCount(i);
+		outtextxy(0, i*12+20, information.str().c_str());
+	}
 }
-int keyLock;//按键锁，2帧才能使用一次键盘 
+void printOtherInformations()
+{
+	stringstream information;
+	setcolor(EGERGB(0x0, 0x3f, 0x0));
+	setfont(12, 0, "宋体");
+	//输出道具信息
+	const string propName[3] = { "shovel","hammer","pickaxe" };
+	for (int i = 0; i < 3; ++i)
+	{
+		information = stringstream();
+		information << propName[i] << ": " << game->getPlayer()->getToolCount(i);
+		outtextxy(0, i * 12 + 20, information.str().c_str());
+	}
+	//输出通行证信息
+	for (int i = 0,j=0; i < 26; ++i)
+	{
+		information = stringstream();
+		j++;
+		if (game->getPlayer()->getPermition(i) == -1)
+			information << (char)(i + 'A') << ": permanent";
+		else if (game->getPlayer()->getPermition(i) > 0)
+			information << (char)(i + 'A') << ": "<< game->getPlayer()->getPermition(i);
+		else j--;
+		outtextxy(0, j * 12 + 50, information.str().c_str());
+	}
+}
+int keyLock;//按键锁，3帧才能使用一次键盘 
 void lockTheKey()
 {
-	keyLock=2;
+	keyLock=3;
 }
 //win? lose?
 std::pair<bool,bool> update(int level)
@@ -249,6 +282,7 @@ std::pair<bool,bool> update(int level)
 		cleardevice();
 		printmap(level);
 		printEventInformations(events);
+		printOtherInformations();
 	}
 	return std::make_pair(win,lose);
 }
@@ -265,6 +299,7 @@ int main()
  		readLevel(level);
  		cleardevice();
  		printmap(level);
+		printOtherInformations();
 		while(true)
 		{
 			clock_t timeStart=clock();
@@ -274,7 +309,7 @@ int main()
 				if(result.first)level++;//won the game
 				break;//won/lost the game
 			}
-			Sleep(33-(clock()-timeStart));
+			Sleep(60-(clock()-timeStart));
 		}
 	}
 	setcolor(EGERGB(0xff, 0x0, 0x0));

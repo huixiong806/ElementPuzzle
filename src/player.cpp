@@ -2,6 +2,25 @@
 #include "edge.h"
 #include "node.h"
 NS_EM_BEGIN
+Player::Player(Vec2i position_)
+{
+	position = position_;
+	for (int i = 0; i < 3; ++i)
+		tool[i] = 0;
+	for (int i = 0; i < 26; ++i)
+		passPermit[i] = 0;
+	passPermit[(size_t)'N' - 'A'] = -1;
+	airUnit = 0;
+}
+Player::Player(Vec2i position_, std::vector<int32_t>tool_, std::vector<int32_t>passPermit_, int32_t airUnit_)
+{
+	position = position_;
+	for (int i = 0; i < 3; ++i)
+		tool[i] = tool_[i];
+	for (int i = 0; i < 26; ++i)
+		passPermit[i] = passPermit_[i];
+	airUnit = airUnit_;
+}
 std::vector<Event> Player::pressurize(Edge& target)
 {
 	std::vector<Event>events;
@@ -25,7 +44,7 @@ std::vector<Event> Player::pressurize(Edge& target)
 std::vector<Event> Player::break_wall(Edge& target, uint32_t tool)
 {
 	std::vector<Event>events;
-	if (this->tool[tool]<1)
+	if (this->tool[tool]<=0)
 	{
 		events.push_back(Event(EventType::playerHaveNoProp));
 		return events;
@@ -93,7 +112,7 @@ void Player::setPosition(Vec2i position_)
 {
 	position = position_;
 }
-const Vec2i Player::getPosition()
+const Vec2i Player::getPosition()const
 {
 	return position;
 }
