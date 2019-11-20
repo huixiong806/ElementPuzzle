@@ -112,6 +112,7 @@ void printNode()
 		}
 	}
 }
+//待重构
 void printEdge()
 {
 	Vec2d mapSize=Vec2d(game->getMap()->getWidth(),game->getMap()->getHeight());
@@ -197,26 +198,21 @@ void printEventInformations(std::vector<Event>& events)
 	for (auto&& item : events)
 		information<<eventInformationText[(int)item.type]<<"   ";
 	outtextxy(0,0,information.str().c_str());
-	const string propName[3] = { "shovel","hammer","pickaxe" };
-	for (int i = 0; i < 3; ++i)
-	{
-		information = stringstream();
-		information<< propName[i] << ":" << game->getPlayer()->getToolCount(i);
-		outtextxy(0, i*12+20, information.str().c_str());
-	}
 }
 void printOtherInformations()
 {
+	outputImage("image\\info\\scene.png", Vec2d(820,350),Vec2d(199,311));
+	outputImage("image\\info\\operation.png", Vec2d(0, 350), Vec2d(145, 300));
 	stringstream information;
 	setcolor(EGERGB(0x0, 0x3f, 0x0));
-	setfont(12, 0, "宋体");
+	setfont(22, 0, "宋体");
 	//输出道具信息
-	const string propName[3] = { "shovel","hammer","pickaxe" };
+	const string propName[3] = { "铲","锤","镐" };
 	for (int i = 0; i < 3; ++i)
 	{
 		information = stringstream();
 		information << propName[i] << ": " << game->getPlayer()->getToolCount(i);
-		outtextxy(0, i * 12 + 20, information.str().c_str());
+		outtextxy(22, i * 22 + 20, information.str().c_str());
 	}
 	//输出通行证信息
 	for (int i = 0,j=0; i < 26; ++i)
@@ -224,11 +220,11 @@ void printOtherInformations()
 		information = stringstream();
 		j++;
 		if (game->getPlayer()->getPermition(i) == -1)
-			information << (char)(i + 'A') << ": permanent";
+			information << (char)(i + 'A') << ": 永久";
 		else if (game->getPlayer()->getPermition(i) > 0)
 			information << (char)(i + 'A') << ": "<< game->getPlayer()->getPermition(i);
 		else j--;
-		outtextxy(0, j * 12 + 50, information.str().c_str());
+		outtextxy(22, j * 22 + 70, information.str().c_str());
 	}
 }
 int keyLock;//按键锁，3帧才能使用一次键盘 

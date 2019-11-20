@@ -72,7 +72,7 @@ namespace image
 	{
 		printImage(point, startPoint, pictureLength);
 	}
-	//打印node的主要部分到屏幕 
+	//打印node的主要部分到屏幕,type为传送点时tag表示传送点的编号
 	void printNode_maintype(NodeType nodeType,int tag,const Vec2d startPoint,const Vec2d pictureLength)
 	{
 		switch (nodeType)
