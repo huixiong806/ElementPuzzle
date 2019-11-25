@@ -134,6 +134,7 @@ namespace image
 		}
 	}
 	//打印edge的主要部分到屏幕 参数分别为 材质类型，方向(R=0或C=1),起始点,图片大小
+	//未完成，用于重构，暂时没有被调用
 	void printEdge_maintype(EdgeType edgeType, int direction, const Vec2d startPoint, const Vec2d pictureLength)
 	{
 		switch (edgeType)

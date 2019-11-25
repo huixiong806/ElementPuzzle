@@ -284,13 +284,13 @@ std::pair<bool,bool> update(int level)
 }
 int main()
 {
-	int level=1;
+	int level=7;
 	setinitmode(0);
     initgraph(screenSize.x, screenSize.y);
 	setcaption("ÔªËØÃÔ¹¬");
     image::init();
 	//level<=total levels
-    while(level<=6)
+    while(level<=7)
     {
  		readLevel(level);
  		cleardevice();

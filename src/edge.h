@@ -25,6 +25,7 @@ public:
 		allowPass[1] = allowPass1_;
 	}
 	Edge(){}
+	~Edge(){}
 	const int32_t typeToInt()const;
 	const int32_t getPassPermit(int index)const;
 private:
